@@ -30,33 +30,41 @@ FlexiFit Gym wants a database to manage its members, trainers, and fitness progr
 ### Entities and Attributes
 
 | Entity | Attributes (PK, FK) | Notes |
-|--------|---------------------|-------|
-| Member | Member_ID (PK), Name, Membership_Type, Start_Date | Stores details of gym members. |
-| Program | Program_ID (PK), Program_Name, Category, Duration | Stores information about fitness programs such as Yoga, Zumba, and Weight Training. |
-| Trainer | Trainer_ID (PK), Name, Qualification, Phone | Stores trainer information and specialization. |
-| Personal_Session | Session_ID (PK), Session_Date, Session_Time, Member_ID (FK), Trainer_ID (FK) | Records personal training sessions booked by members. |
-| Attendance | Attendance_ID (PK), Session_ID (FK), Member_ID (FK), Status | Records attendance for each personal training session. |
-| Payment | Payment_ID (PK), Payment_Date, Amount, Payment_Method, Member_ID (FK) | Stores membership and personal session payment details. |
+|--------|----------------------|-------|
+| **Member** | **Member_ID (PK)**, Name, Membership_type, Start_date | Stores details of gym members. |
+| **Program** | **Program_ID (PK)**, Program_name, Category, Duration | Stores information about fitness programs. |
+| **Trainer** | **Trainer_ID (PK)**, Name, Qualification, Experience, Phone_no | Stores trainer information. |
+| **Session** | **Session_ID (PK)**, Session_date, Session_time, Duration, **Trainer_ID (FK)** | Represents training sessions conducted by trainers. |
+| **Attendance** | **Attendance_ID (PK)**, Status, In_time, Remarks, **Session_ID (FK)** | Stores attendance details for each session. |
+| **Payment** | **Payment_ID (PK)**, Amount, Payment_date, Payment_method, **Member_ID (FK)** | Stores payment records made by members. |
 ### Relationships and Constraints
 
 | Relationship | Cardinality | Participation | Notes |
 |--------------|-------------|----------------|-------|
-| Member JOINS Program | M:N | Total – Partial | A member can join multiple programs, and a program can have many members. |
-| Trainer ASSIGNED TO Program | M:N | Total – Total | A trainer can teach multiple programs, and a program can have multiple trainers. |
-| Member BOOKS Personal Session | 1:N | Partial – Total | One member can book many personal training sessions; every session belongs to one member. |
-| Trainer CONDUCTS Personal Session | 1:N | Partial – Total | One trainer can conduct many sessions; each session is conducted by one trainer. |
-| Personal Session HAS Attendance | 1:N | Total – Total | Attendance is recorded for each session. |
-| Member MAKES Payment | 1:N | Partial – Total | A member can make multiple payments; every payment belongs to one member. |
-
+| **Joins** (Member – Program) | M : N | Partial | A member can join multiple programs, and each program can have many members. |
+| **Assigned_to** (Program – Trainer) | M : N | Partial | Multiple trainers can teach multiple programs. |
+| **Books** (Member – Session) | 1 : N | Total on Session | One member can book many sessions, while each session is booked by one member. |
+| **Conducts** (Trainer – Session) | 1 : N | Total on Session | One trainer conducts many sessions, and every session is conducted by one trainer. |
+| **Makes** (Member – Payment) | 1 : N | Total on Payment | A member can make many payments, and each payment belongs to one member. |
+| **Has** (Session – Attendance) | 1 : 1 | Total | Every session has one attendance record, and every attendance record belongs to one session. |
 ### Assumptions
+
 1.	Every Member has a unique Member_ID. 
-2.	Every Trainer has a unique Trainer_ID. 
-3.	Every Program has a unique Program_ID. 
-4.	A member may enroll in multiple programs. 
-5.	A trainer may be assigned to multiple programs. 
-6.	Each personal training session is conducted by one trainer for one member. 
-7.	Attendance is recorded for each personal session. 
-8.	Payments may be for either membership fees or personal training sessions.
+2.	Every Program has a unique Program_ID. 
+3.	Every Trainer has a unique Trainer_ID. 
+4.	Every Session has a unique Session_ID. 
+5.	Every Attendance record has a unique Attendance_ID. 
+6.	Every Payment has a unique Payment_ID. 
+7.	A member can enroll in multiple fitness programs. 
+8.	A fitness program can have multiple members. 
+9.	A trainer can be assigned to multiple programs. 
+10.	A program can have multiple trainers. 
+11.	Each session is conducted by exactly one trainer. 
+12.	A trainer may conduct many sessions. 
+13.	A member can book multiple sessions. 
+14.	Each payment is made by only one member. 
+15.	A member may make multiple payments during their membership
+
 
 ---
 
@@ -81,37 +89,39 @@ The Central Library wants to manage book lending and cultural events.
 
 ### Entities and Attributes
 
-| Entity            | Attributes (PK, FK)                                                                    | Notes                                                       |
-| ----------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| **Member**        | **Member_ID (PK)**, Name, Email, Phone_No, Membership_Status                           | Stores information about library members.                   |
-| **Book**          | **Book_ID (PK)**, Title, Author, Publisher, Edition, Language                          | Stores details of all books available in the library.       |
-| **Borrow_Record** | **Borrow_ID (PK)**, Member_ID (FK), Book_ID (FK), Due_Date, Return_Date, Borrow_Status | Records every book borrowing transaction.                   |
-| **Event**         | **Event_ID (PK)**, Event_Name, Event_Date, Start_Time, End_Time                        | Stores information about library events.                    |
-| **Speaker**       | **Speaker_ID (PK)**, Speaker_Name, Qualification, Phone_No                             | Stores details of speakers/authors participating in events. |
-| **Fine**          | **Payment_ID (PK)**, Borrow_ID (FK), Amount, Fine_Date, Payment_Date, Payment_Status   | Stores overdue fine details for late book returns.          |
-
+| Entity | Attributes (PK, FK) | Notes |
+|--------|----------------------|-------|
+| **Member** | **Member_ID (PK)**, Name, Email, Phone_no | Stores library member details. |
+| **Book** | **Book_ID (PK)**, Title, Author, Category | Stores information about books available in the library. |
+| **Loan_Record** | **Loan_ID (PK)**, Loan_date, Due_date, Return_date, **Member_ID (FK)**, **Book_ID (FK)** | Records book borrowing transactions. |
+| **Fine** | **Fine_ID (PK)**, Amount, Fine_date, Payment_status, **Loan_ID (FK)** | Stores fines generated for overdue books. |
+| **Event** | **Event_ID (PK)**, Event_name, Event_date, Duration, Description | Stores details of library events. |
+| **Speaker** | **Speaker_ID (PK)**, Speaker_name, Bio | Stores details of guest speakers. |
+| **Room** | **Room_ID (PK)**, Room_name, Capacity, Location | Stores information about library rooms used for events and reservations. |
 ### Relationships and Constraints
 
+| Relationship | Cardinality | Participation | Notes |
+|--------------|-------------|----------------|-------|
+| **Borrows** (Member – Loan_Record) | 1 : N | Total on Loan_Record | A member can borrow many books, while each loan record belongs to one member. |
+| **For** (Loan_Record – Book) | N : 1 | Total on Loan_Record | Each loan record is for one book, while a book can appear in many loan records over time. |
+| **Generates** (Loan_Record – Fine) | 1 : N | Partial | A loan may generate one or more fines if returned late; some loans generate no fine. |
+| **Registers** (Member – Event) | M : N | Partial | Members can register for multiple events, and each event can have many members. |
+| **Features** (Event – Speaker) | M : N | Partial | An event may feature multiple speakers, and a speaker may participate in multiple events. |
+| **Hosts** (Room – Event) | 1 : N | Total on Event | One room can host many events, while each event is hosted in one room. |
+| **Reserves** (Member – Room) | N : 1 | Partial | A member can reserve multiple rooms, while a room can be reserved by different members at different times. |
 
-| Relationship                         | Cardinality | Participation                           | Notes                                                                                      |
-| ------------------------------------ | ----------- | --------------------------------------- | ------------------------------------------------------------------------------------------ |
-| **Member — Borrows — Borrow_Record** | 1 : N       | Partial (Member), Total (Borrow_Record) | One member can have many borrow records; each borrow record belongs to one member.         |
-| **Borrow_Record — For — Book**       | N : 1       | Total                                   | Each borrow record refers to one book; a book can appear in many borrow records over time. |
-| **Borrow_Record — Generates — Fine** | 1 : 0..1    | Partial                                 | A borrow record generates a fine only if the book is returned late.                        |
-| **Member — Registers — Event**       | M : N       | Partial                                 | Members may register for multiple events, and an event may have many registered members.   |
-| **Event — Has — Speaker**            | M : N       | Total (Event), Partial (Speaker)        | Every event has one or more speakers, while a speaker may participate in multiple events.  |
 
 ### Assumptions
 1.	Every member has a unique Member_ID. 
 2.	Every book has a unique Book_ID. 
-3.	A member can borrow multiple books, but each borrow record refers to only one book. 
-4.	Borrow details such as loan date, due date, and return date are stored in Borrow_Record. 
-5.	A fine is generated only if a book is returned after the due date. 
-6.	Members can register for multiple events. 
-7.	Each event may have multiple speakers. 
-8.	A speaker may participate in multiple library events. 
-9.	All primary keys are unique and cannot be NULL. 
-10.	One borrow record can generate at most one fine.
+3.	A member can borrow multiple books, but each loan record belongs to only one member. 
+4.	A book can be borrowed many times, but only through different loan records. 
+5.	A fine is generated only if a book is returned after its due date. 
+6.	A member can register for multiple events, and an event can have multiple members. 
+7.	An event can feature multiple speakers, and a speaker can participate in multiple events. 
+8.	Every event is hosted in one room, while a room can host many events at different times. 
+9.	A member can reserve rooms based on availability, and a room cannot have overlapping reservations. 
+10.	All loan, fine, event, and reservation records are maintained in the database for future reference and reporting. 
 
 ---
 
@@ -170,10 +180,3 @@ A popular restaurant wants to manage reservations, orders, and billing.
 
 ---
 
-## Instructions for Students
-
-1. Complete **all three scenarios** (A, B, C).  
-2. Identify entities, relationships, and attributes for each.  
-3. Draw ER diagrams using **draw.io / diagrams.net** or hand-drawn & scanned.  
-4. Fill in all tables and assumptions for each scenario.  
-5. Export the completed Markdown (with diagrams) as **a single PDF**
