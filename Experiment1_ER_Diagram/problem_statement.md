@@ -178,5 +178,9 @@ A popular restaurant wants to manage reservations, orders, and billing.
 8.	Each bill includes food charges, service charges, and any applicable discount. 
 9.	One waiter can serve many bills/reservations, but each bill is handled by only one waiter.
 
+### Result
+
+The ER diagrams for the City Fitness Club Management System, City Library Event & Book Lending System, and Restaurant Table Reservation & Ordering System were successfully designed based on the given business requirements.
+
 ---
 
