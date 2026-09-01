@@ -1,4 +1,6 @@
 # Experiment 3: DML Commands
+## Name: Lakshanya.N
+## Register Number: 21222423036
 
 ## AIM
 To study and implement DML (Data Manipulation Language) commands.
