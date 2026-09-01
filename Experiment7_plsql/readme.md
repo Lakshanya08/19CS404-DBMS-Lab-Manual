@@ -1,4 +1,6 @@
 # Experiment 7: PL/SQL – Variables, Control Structures and Loops
+## Name : Lakshanya.N
+## Register Number : 212224230136
 
 ## AIM
 To write and execute simple PL/SQL programs using variables, loops, and conditional statements.
