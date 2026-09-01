@@ -2,6 +2,7 @@
 # Name : Lakshanya.N
 # Register Number : 212224230136
 
+
 ## AIM
 To write and execute PL/SQL trigger programs for automating actions in response to specific table events like INSERT, UPDATE, or DELETE.
 
@@ -209,7 +210,7 @@ SELECT * FROM audit_log;
 
 **Expected Output:**
 - If the inserted salary in the `employees` table is below the condition (e.g., salary < 3000), the insert operation is blocked, and an error message is raised, such as: `ERROR: Salary below minimum threshold.`
--  ## Query:
+## Query:
 ```
   CREATE TABLE employees (
     emp_id NUMBER PRIMARY KEY,
@@ -235,7 +236,7 @@ COMMIT;
 INSERT INTO employees (emp_id, emp_name, salary)
 VALUES (102, 'Test', 2000);
 ```
-- Output:
+## Output:
 <img width="1062" height="382" alt="image" src="https://github.com/user-attachments/assets/3eb639e5-dd82-463c-81e5-11808392f738" />
 
 
